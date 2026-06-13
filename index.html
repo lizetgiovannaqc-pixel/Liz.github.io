@@ -1,0 +1,494 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+
+
+    <script src="https://cdn.botpress.cloud/webchat/v3.6/inject.js"></script>
+<script src="https://files.bpcontent.cloud/2026/06/13/01/20260613010057-E3ATUHLH.js" defer></script>
+    
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Misión Adjetivos: ¡Aventura Espacial Completa!</title>
+    <style>
+        /* --- ESTILOS GENERALES Y FONDO --- */
+        body {
+            font-family: 'Comic Sans MS', 'Arial', sans-serif;
+            background: radial-gradient(circle, #1a103c 0%, #0b061f 100%);
+            color: white;
+            margin: 0;
+            padding: 0;
+            text-align: center;
+        }
+
+        header {
+            background: linear-gradient(90deg, #00dbde, #fc00ff);
+            padding: 20px;
+            box-shadow: 0 4px 15px rgba(0, 219, 222, 0.5);
+        }
+
+        h1 {
+            margin: 0;
+            font-size: 2.2rem;
+            text-shadow: 2px 2px #000;
+        }
+
+        p.sub {
+            margin: 5px 0 0 0;
+            color: #ffeb3b;
+            font-size: 1.1rem;
+        }
+
+        /* --- BOTONES DEL MENÚ PRINCIPAL --- */
+        .menu-navegacion {
+            display: flex;
+            justify-content: center;
+            gap: 10px;
+            margin: 20px auto;
+            max-width: 800px;
+            padding: 0 10px;
+        }
+
+        .btn-nav {
+            background-color: #331b63;
+            color: white;
+            border: 3px solid #ff00ff;
+            padding: 12px 20px;
+            font-size: 1.1rem;
+            font-weight: bold;
+            border-radius: 25px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            flex: 1;
+        }
+
+        .btn-nav:hover, .btn-nav.activo {
+            background: linear-gradient(90deg, #ff00ff, #00dbde);
+            border-color: #fff;
+            transform: scale(1.05);
+            box-shadow: 0 0 15px #ff00ff;
+        }
+
+        /* --- CONTENEDORES DE SECCIONES --- */
+        .seccion {
+            display: none; 
+            animation: fadeIn 0.5s ease;
+            max-width: 800px;
+            margin: 0 auto 40px auto;
+            padding: 0 20px;
+        }
+
+        .seccion.activa {
+            display: block; 
+        }
+
+        .tarjeta-contenido {
+            background: rgba(255, 255, 255, 0.1);
+            border: 4px solid #00ffff;
+            border-radius: 25px;
+            padding: 25px;
+            box-shadow: 0 8px 25px rgba(0, 255, 255, 0.2);
+            backdrop-filter: blur(5px);
+            text-align: left;
+        }
+
+        .tarjeta-contenido h2 {
+            color: #ffeb3b;
+            text-align: center;
+            margin-top: 0;
+            font-size: 1.8rem;
+            text-shadow: 2px 2px #000;
+        }
+
+        /* --- CONTENEDOR DE RECURSOS INTERACTIVOS --- */
+        .contenedor-flex {
+            display: flex;
+            flex-direction: column;
+            gap: 20px;
+            align-items: center;
+            margin-top: 20px;
+        }
+
+        @media (min-width: 768px) {
+            .contenedor-flex { flex-direction: row; justify-content: space-between; }
+            .bloque-recurso { width: 48%; }
+        }
+
+        .bloque-recurso {
+            width: 100%;
+            background: rgba(0, 0, 0, 0.4);
+            border-radius: 15px;
+            padding: 15px;
+            box-sizing: border-box;
+            text-align: center;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            min-height: 280px;
+            border: 2px dashed #00ffff;
+        }
+
+        .bloque-recurso h3 {
+            margin-top: 0;
+            color: #ffeb3b;
+        }
+
+        /* NUEVAS GUÍAS VISUALES RECONOCIBLES CON EMOJIS GIGANTES */
+        .emoji-guia {
+            font-size: 90px;
+            margin: 10px 0;
+            animation: flotarPequeño 3s infinite ease-in-out;
+        }
+
+        @keyframes flotarPequeño {
+            0%, 100% { transform: translateY(0); }
+            50% { transform: translateY(-10px); }
+        }
+
+        /* BOTONES DE AUDIO INTERACTIVOS */
+        .btn-audio {
+            background: linear-gradient(135deg, #00dbde 0%, #005f73 100%);
+            color: white;
+            border: 3px solid #fff;
+            padding: 20px;
+            font-size: 1.3rem;
+            font-weight: bold;
+            border-radius: 50px;
+            cursor: pointer;
+            box-shadow: 0 5px 15px rgba(0, 219, 222, 0.4);
+            transition: transform 0.2s, background 0.2s;
+            margin-top: 15px;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .btn-audio:hover {
+            transform: scale(1.05);
+            box-shadow: 0 0 20px #00dbde;
+        }
+
+        /* --- ESTILOS DEL JUEGO DE 20 PREGUNTAS --- */
+        .progreso-container {
+            max-width: 600px;
+            margin: 20px auto;
+        }
+
+        .barra-progreso {
+            background-color: #333;
+            border-radius: 20px;
+            height: 25px;
+            width: 100%;
+            border: 3px solid #fff;
+            overflow: hidden;
+        }
+
+        .llenado {
+            background: linear-gradient(90deg, #4caf50, #8bc34a);
+            height: 100%;
+            width: 5%;
+            transition: width 0.4s ease;
+        }
+
+        .texto-contador {
+            font-size: 1.3rem;
+            color: #ffeb3b;
+            font-weight: bold;
+            margin-top: 5px;
+            text-align: center;
+        }
+
+        .opciones-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 15px;
+            max-width: 500px;
+            margin: 20px auto 0 auto;
+        }
+
+        @media (max-width: 500px) {
+            .opciones-grid { grid-template-columns: 1fr; }
+        }
+
+        .btn-opcion {
+            background-color: #222;
+            color: white;
+            border: 3px solid #fff;
+            padding: 15px;
+            font-size: 1.2rem;
+            font-weight: bold;
+            border-radius: 15px;
+            cursor: pointer;
+            transition: all 0.2s;
+        }
+
+        .btn-opcion:hover { transform: scale(1.05); background-color: #333; }
+        .correcto { background-color: #4caf50 !important; border-color: #a3e635 !important; }
+        .incorrecto { background-color: #f44336 !important; border-color: #ff8a80 !important; animation: shake 0.3s; }
+
+        @keyframes shake {
+            0%, 100% { transform: translateX(0); }
+            25% { transform: translateX(-8px); }
+            75% { transform: translateX(8px); }
+        }
+
+        /* --- PANTALLA DE LA COPA --- */
+        .pantalla-victoria {
+            display: none;
+            padding: 40px 20px;
+            animation: pop 0.5s ease;
+        }
+
+        .copa-animada {
+            font-size: 120px;
+            animation: flotar 2s infinite ease-in-out;
+            display: inline-block;
+        }
+
+        @keyframes flotar {
+            0%, 100% { transform: translateY(0) rotate(0deg); }
+            50% { transform: translateY(-20px) rotate(5deg); }
+        }
+
+        .btn-reiniciar {
+            background: linear-gradient(90deg, #4caf50, #8bc34a);
+            color: white;
+            border: none;
+            padding: 15px 35px;
+            font-size: 1.3rem;
+            font-weight: bold;
+            border-radius: 50px;
+            cursor: pointer;
+            margin-top: 30px;
+        }
+
+        @keyframes fadeIn { from { opacity: 0; } to { opacity: 1; } }
+    </style>
+</head>
+<body>
+
+    <header>
+        <h1>🚀 ¡Misión Espacial de los Adjetivos! 🌌</h1>
+        <p class="sub">Aprende, escucha y juega en el gran torneo galáctico</p>
+    </header>
+
+    <div class="menu-navegacion">
+        <button id="btn-tab1" class="btn-nav activo" onclick="cambiarPestana('adjetivo1')">📚 Adjetivo I</button>
+        <button id="btn-tab2" class="btn-nav" onclick="cambiarPestana('adjetivo2')">📖 Adjetivo II</button>
+        <button id="btn-tab3" class="btn-nav" onclick="cambiarPestana('juego')">🎮 ¡Jugar el Reto!</button>
+    </div>
+
+    <div id="sec-adjetivo1" class="seccion activa">
+        <div class="tarjeta-contenido">
+            <h2>🍎 El Adjetivo Calificativo</h2>
+            <p style="font-size: 1.2rem; line-height: 1.6rem;">
+                Los <strong>adjetivos calificativos</strong> son palabras mágicas que nos dicen <strong>cómo son</strong> o <strong>cómo están</strong> las cosas, los animales o las personas.
+            </p>
+            <p style="font-size: 1.1rem; color: #00ffff;">💡 Ejemplos fáciles:</p>
+            <ul style="font-size: 1.1rem; list-style-type: '⭐ '; padding-left: 20px;">
+                <li>La manzana es <strong>roja</strong> y <strong>dulce</strong>.</li>
+                <li>El perro <strong>juguetón</strong> corre feliz.</li>
+            </ul>
+
+            <div class="contenedor-flex">
+                <div class="bloque-recurso">
+                    <h3>📸 Personaje de Ejemplo</h3>
+                    <div class="emoji-guia">🍎✨</div>
+                    <p style="font-size: 1rem; margin-top: 5px;">¡Una manzana <strong>roja</strong>, <strong>grande</strong> y <strong>deliciosa</strong>!</p>
+                </div>
+                <div class="bloque-recurso">
+                    <h3>🔊 Explicación Hablada</h3>
+                    <p style="font-size: 1rem; margin-bottom: 10px;">¡Presiona el botón para escuchar al robot explicarte este tema!</p>
+                    <button class="btn-audio" onclick="hablar('¡Hola explorador! Los adjetivos calificativos sirven para decir cómo son las cosas. Por ejemplo, si ves una manzana, puedes decir que es roja, grande y dulce. ¡Esas palabras son adjetivos!')">📢 Escuchar al Robot 🤖</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div id="sec-adjetivo2" class="seccion">
+        <div class="tarjeta-contenido" style="border-color: #ff00ff;">
+            <h2>🛸 Adjetivos Demostrativos y Posesivos</h2>
+            <p style="font-size: 1.2rem; line-height: 1.6rem;">
+                ¡Estos adjetivos nos sirven para saber la distancia de los objetos o a quién le pertenecen!
+            </p>
+            <p style="font-size: 1.1rem; color: #ff00ff; margin-bottom: 5px;">📍 Para la distancia (Demostrativos):</p>
+            <ul style="font-size: 1.1rem; list-style-type: '👉 '; padding-left: 20px; margin-top: 0;">
+                <li><strong>Este / Esta:</strong> Si está muy CERCA.</li>
+                <li><strong>Ese / Esa:</strong> Si está a MEDIA distancia.</li>
+                <li><strong>Aquel / Aquella:</strong> Si está muy LEJOS.</li>
+            </ul>
+
+            <p style="font-size: 1.1rem; color: #00ff00; margin-bottom: 5px;">🎒 Para la pertenencia (Posesivos):</p>
+            <ul style="font-size: 1.1rem; list-style-type: '🎒 '; padding-left: 20px; margin-top: 0;">
+                <li><strong>Mi / Mis:</strong> Es mío (<em>Mi juguete</em>).</li>
+                <li><strong>Tu / Tus:</strong> Es tuyo (<em>Tu cuaderno</em>).</li>
+            </ul>
+
+            <div class="contenedor-flex">
+                <div class="bloque-recurso" style="border-color: #ff00ff;">
+                    <h3>📸 Personajes de Ejemplo</h3>
+                    <div class="emoji-guia">👨‍🚀...🛸</div>
+                    <p style="font-size: 1rem; margin-top: 5px;">El astronauta dice: ¡<strong>Aquella</strong> nave está muy lejos!</p>
+                </div>
+                <div class="bloque-recurso" style="border-color: #ff00ff;">
+                    <h3>🔊 Explicación Hablada</h3>
+                    <p style="font-size: 1rem; margin-bottom: 10px;">¡Presiona el botón para escuchar los secretos de las distancias!</p>
+                    <button class="btn-audio" style="background: linear-gradient(135deg, #ff00ff 0%, #aa00aa 100%); box-shadow: 0 5px 15px rgba(255, 0, 255, 0.4);" onclick="hablar('¡Atención tripulación! Usamos este cuando algo está cerquita en nuestra mano, ese cuando está un poco lejos, y aquella cuando miramos una nave espacial muy allá en la galaxia.')">📢 Escuchar al Robot 🤖</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div id="sec-juego" class="seccion">
+        <div id="zona-juego-activa">
+            <div class="progreso-container">
+                <div class="barra-progreso"><div class="llenado" id="barra"></div></div>
+                <div class="texto-contador" id="contador">Reto: 1 / 20</div>
+            </div>
+
+            <div class="tarjeta-contenido" style="border-color: #ffeb3b; text-align: center;">
+                <div style="background-color: #ff007f; display: inline-block; padding: 5px 15px; border-radius: 10px; font-weight: bold; margin-bottom: 15px;" id="etiqueta-tipo">Cargando...</div>
+                <div style="font-size: 1.5rem; min-height: 60px; font-weight: bold;" id="texto-pregunta">¡Prepárate!</div>
+                
+                <div class="opciones-grid" id="contenedor-opciones"></div>
+            </div>
+        </div>
+
+        <div id="pantalla-final" class="pantalla-victoria">
+            <div class="copa-animada">🏆</div>
+            <h1 style="color: #ffeb3b; font-size: 3rem; text-shadow: 2px 2px #000; margin: 10px 0;">¡LO LOGRASTE!</h1>
+            <p style="font-size: 1.4rem; color: #00ffff; margin: 0;">¡Ganaste la Copa del Torneo de Adjetivos! 🎉</p>
+            <p style="font-size: 1.1rem; color: #fff;">Completaste las 20 misiones espaciales de 2do Grado con éxito total.</p>
+            <button class="btn-reiniciar" onclick="reiniciarJuego()">¡Volver a Jugar! 🔄</button>
+        </div>
+    </div>
+
+    <script>
+        // Sistema interactivo de lectura de voz nativa (No requiere internet ni YouTube)
+        function hablar(texto) {
+            // Detener cualquier audio que se esté reproduciendo antes
+            window.speechSynthesis.cancel();
+            let mensaje = new SpeechSynthesisUtterance(texto);
+            mensaje.lang = 'es-ES'; // Idioma español
+            mensaje.rate = 1.1;     // Velocidad amigable para niños
+            window.speechSynthesis.speak(mensaje);
+        }
+
+        function cambiarPestana(nombrePestana) {
+            // Detener la voz si cambian de pestaña para que no se superponga
+            window.speechSynthesis.cancel();
+
+            document.getElementById('sec-adjetivo1').classList.remove('activa');
+            document.getElementById('sec-adjetivo2').classList.remove('activa');
+            document.getElementById('sec-juego').classList.remove('activa');
+
+            document.getElementById('btn-tab1').classList.remove('activo');
+            document.getElementById('btn-tab2').classList.remove('activo');
+            document.getElementById('btn-tab3').classList.remove('activo');
+
+            if (nombrePestana === 'adjetivo1') {
+                document.getElementById('sec-adjetivo1').className = "seccion activa";
+                document.getElementById('btn-tab1').className = "btn-nav activo";
+            } else if (nombrePestana === 'adjetivo2') {
+                document.getElementById('sec-adjetivo2').className = "seccion activa";
+                document.getElementById('btn-tab2').className = "btn-nav activo";
+            } else if (nombrePestana === 'juego') {
+                document.getElementById('sec-juego').className = "seccion activa";
+                document.getElementById('btn-tab3').className = "btn-nav activo";
+                cargarPregunta(); 
+            }
+        }
+
+        // --- BANCO DE 20 PREGUNTAS ---
+        const preguntas = [
+            { tipo: "Adjetivo I: Calificativo", p: "¿Cuál palabra dice cómo es el helado?", o: ["Frío", "Correr", "Ellos", "Mesa"], c: 0 },
+            { tipo: "Adjetivo I: Calificativo", p: "En la frase 'El perro juguetón', ¿cuál es el adjetivo?", o: ["El", "Perro", "Juguetón", "Ladrar"], c: 2 },
+            { tipo: "Adjetivo I: Calificativo", p: "Completa: 'La manzana es ______ y dulce'.", o: ["Saltarina", "Roja", "Lápiz", "Cantar"], c: 1 },
+            { tipo: "Adjetivo I: Calificativo", p: "¿Cuál de estos es un adjetivo calificativo?", o: ["Zapato", "Yo", "Grande", "Comer"], c: 2 },
+            { tipo: "Adjetivo I: Calificativo", p: "El auto de papá está 'limpio'. ¿Qué palabra es 'limpio'?", o: ["Adjetivo", "Sustantivo", "Verbo", "Nombre"], c: 0 },
+            { tipo: "Adjetivo I: Calificativo", p: "¿Qué palabra describe cómo está un niño feliz?", o: ["Triste", "Sonriente", "Piedra", "Dormir"], c: 1 },
+            { tipo: "Adjetivo I: Calificativo", p: "En 'El oso peludo come miel', el adjetivo es:", o: ["Oso", "Come", "Miel", "Peludo"], c: 3 },
+            { tipo: "Adjetivo I: Calificativo", p: "Busca el adjetivo ideal para 'Cielo':", o: ["Azul", "Rápido", "Caliente", "Ruidoso"], c: 0 },
+            { tipo: "Adjetivo I: Calificativo", p: "Si una tortuga camina despacio, es...", o: ["Veloz", "Lenta", "Saltarina", "Verde"], c: 1 },
+            { tipo: "Adjetivo I: Calificativo", p: "¿Cuál de estas palabras NO es un adjetivo?", o: ["Hermosa", "Inteligente", "Pelota", "Flaco"], c: 2 },
+            
+            { tipo: "Adjetivo II: Demostrativo / Posesivo", p: "Si el juguete está en MI mano, digo: '______ juguete'.", o: ["Ese", "Este", "Aquel", "Tu"], c: 1 },
+            { tipo: "Adjetivo II: Demostrativo / Posesivo", p: "Si el carro está muy LEJOS, dices: '______ carro'.", o: ["Este", "Ese", "Aquel", "Mi"], c: 2 },
+            { tipo: "Adjetivo II: Demostrativo / Posesivo", p: "En la frase 'Mi mochila es verde', ¿cuál es el adjetivo posesivo?", o: ["Mi", "Mochila", "Es", "Verde"], c: 0 },
+            { tipo: "Adjetivo II: Demostrativo / Posesivo", p: "Si el cuaderno es de ÉL, decimos: 'Es ______ cuaderno'.", o: ["Tu", "Mi", "Su", "Nuestro"], c: 2 },
+            { tipo: "Adjetivo II: Demostrativo / Posesivo", p: "Usa el demostrativo para algo que está a media distancia:", o: ["Este", "Ese", "Aquel", "Mío"], c: 1 },
+            { tipo: "Adjetivo II: Demostrativo / Posesivo", p: "En 'Nuestra aula es bonita', el adjetivo de pertenencia es:", o: ["Aula", "Bonita", "Es", "Nuestra"], c: 3 },
+            { tipo: "Adjetivo II: Demostrativo / Posesivo", p: "¡Mira allá arriba en el cielo! ______ nube tiene forma de gato.", o: ["Esta", "Esa", "Aquella", "Tu"], c: 2 },
+            { tipo: "Adjetivo II: Demostrativo / Posesivo", p: "Si te hablo a TI de algo tuyo, digo: 'Guarda ______ lápiz'.", o: ["Su", "Tu", "Mi", "Este"], c: 1 },
+            { tipo: "Adjetivo II: Demostrativo / Posesivo", p: "Los adjetivos 'este, ese, aquel' sirven para indicar...", o: ["Colores", "Tamaños", "Distancia", "Acciones"], c: 2 },
+            { tipo: "Adjetivo II: Demostrativo / Posesivo", p: "Pregunta Final: ¿Cuál palabra es un adjetivo de posesión?", o: ["Mío", "Grande", "Aquel", "Saltar"], c: 0 }
+        ];
+
+        let indiceActual = 0;
+        let bloqueado = false;
+
+        function cargarPregunta() {
+            bloqueado = false;
+            if(!document.getElementById("etiqueta-tipo")) return;
+            
+            const data = preguntas[indiceActual];
+            
+            document.getElementById("etiqueta-tipo").innerText = data.tipo;
+            document.getElementById("texto-pregunta").innerText = data.p;
+            document.getElementById("contador").innerText = `Reto: ${indiceActual + 1} / 20`;
+            
+            const porcentaje = ((indiceActual + 1) / preguntas.length) * 100;
+            document.getElementById("barra").style.width = `${porcentaje}%`;
+
+            const contenedor = document.getElementById("contenedor-opciones");
+            contenedor.innerHTML = "";
+
+            data.o.forEach((opcion, index) => {
+                const boton = document.createElement("button");
+                boton.className = "btn-opcion";
+                boton.innerText = opcion;
+                boton.onclick = function() { verificarRespuesta(index, boton); };
+                contenedor.appendChild(boton);
+            });
+        }
+
+        function verificarRespuesta(indiceSeleccionado, botonClikeado) {
+            if (bloqueado) return;
+            bloqueado = true;
+
+            const respuestaCorrecta = preguntas[indiceActual].c;
+
+            if (indiceSeleccionado === respuestaCorrecta) {
+                botonClikeado.className = "btn-opcion correcto";
+                setTimeout(function() { avanzarJuego(); }, 1000);
+            } else {
+                botonClikeado.className = "btn-opcion incorrecto";
+                setTimeout(function() {
+                    botonClikeado.className = "btn-opcion";
+                    bloqueado = false;
+                }, 500);
+            }
+        }
+
+        function avanzarJuego() {
+            indiceActual++;
+            if (indiceActual < preguntas.length) {
+                cargarPregunta();
+            } else {
+                document.getElementById("zona-juego-activa").style.display = "none";
+                document.getElementById("pantalla-final").style.display = "block";
+            }
+        }
+
+        function reiniciarJuego() {
+            indiceActual = 0;
+            document.getElementById("pantalla-final").style.display = "none";
+            document.getElementById("zona-juego-activa").style.display = "block";
+            cargarPregunta();
+        }
+        
+        // Carga inicial obligatoria
+        cargarPregunta();
+    </script>
+</body>
+</html>
